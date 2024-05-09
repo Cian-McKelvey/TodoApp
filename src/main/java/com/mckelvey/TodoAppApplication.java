@@ -3,6 +3,7 @@ package com.mckelvey;
 import com.mckelvey.Repository.BrandRepository;
 import com.mckelvey.api.Brand;
 import com.mckelvey.db.MongoDBUtils;
+import com.mckelvey.health.ApplicationHealthCheck;
 import com.mckelvey.resources.BrandResource;
 import com.mckelvey.resources.HelloWorldResource;
 import static com.mckelvey.Constants.*;
@@ -36,22 +37,35 @@ public class TodoAppApplication extends Application<TodoAppConfiguration> {
     }
 
     @Override
-    public void run(final TodoAppConfiguration configuration,
-                    final Environment environment) {
-        // TODO: implement application
+    public void run(final TodoAppConfiguration configuration, final Environment environment) {
 
         /*
-        Database Connectivity
+            HealthCheck
         */
 
-        // Initialise MongoDB connection - Note collection isn't initialised the same
-        MongoClient mongoClient = MongoClients.create(MONGODB_URL);
-        MongoDatabase database = mongoClient.getDatabase(MONGODB_DATABASE);
-        // Set MongoDB instances in the utility class - Only pass the string collection name
-        MongoDBUtils.setMongoClient(mongoClient);
-        MongoDBUtils.setMongoDatabase(database);
-        MongoDBUtils.setTodoCollection(MONGODB_TODO_COLLECTION);
+        environment.healthChecks().register("application", new ApplicationHealthCheck());
 
+        /*
+            Database Connectivity
+        */
+        MongoClient mongoClient = null;
+        try {
+            // Initialise MongoDB connection - Note collection isn't initialised the same
+            mongoClient = MongoClients.create(MONGODB_URL);
+            MongoDatabase database = mongoClient.getDatabase(MONGODB_DATABASE);
+            // Set MongoDB instances in the utility class - Only pass the string collection name
+            MongoDBUtils.setMongoClient(mongoClient);
+            MongoDBUtils.setMongoDatabase(database);
+            MongoDBUtils.setTodoCollection(MONGODB_TODO_COLLECTION);
+        } catch (Exception e) {
+
+            e.printStackTrace(); // Example: printing the stack trace
+            throw new RuntimeException("Failed to initialize MongoDB connection.", e);
+        }
+
+        /*
+            Resources
+        */
 
         // getting-started: HelloWorldApplication#run->HelloWorldResource
         HelloWorldResource resource = new HelloWorldResource(
