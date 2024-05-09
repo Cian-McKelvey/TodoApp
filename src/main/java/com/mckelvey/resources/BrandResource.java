@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Path("/brands")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)  // Changes the return types of the methods to json in their http response
 public class BrandResource {
 
     private final int defaultSize;
