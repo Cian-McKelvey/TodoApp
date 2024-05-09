@@ -5,7 +5,7 @@ defaultName: TodoApp
 # Default size for brands list repo thing
 defaultSize: 5
 
-defaulTodoUserId: DefaultID
+defaultTodoUserId: DefaultID
 
 logging:
   level: INFO

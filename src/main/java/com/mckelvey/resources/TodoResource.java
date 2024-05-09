@@ -19,4 +19,12 @@ public class TodoResource {
     public void addTodo(Todo todo) {
         // Use todoCollection to interact with the MongoDB collection ...
     }
+
+    // Update todo
+
+    // Delete todo
+
+    // Fetch all todos
+
+    // Fetch all todos by userID - not needed right now
 }

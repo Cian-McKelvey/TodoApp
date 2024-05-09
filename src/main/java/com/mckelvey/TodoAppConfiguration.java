@@ -18,6 +18,9 @@ public class TodoAppConfiguration extends Configuration {
     @NotNull
     private int defaultSize;
 
+    @NotNull
+    private String defaultTodoUserId;
+
     @Valid
     @NotNull
     private DefaultLoggingFactory loggingFactory = new DefaultLoggingFactory();
@@ -34,6 +37,15 @@ public class TodoAppConfiguration extends Configuration {
         this.defaultSize = defaultSize;
     }
 
+    @JsonProperty
+    public String getDefaultTodoUserId() {
+        return defaultTodoUserId;
+    }
+
+    @JsonProperty
+    public void setDefaultTodoUserId(String defaultTodoUserId) {
+        this.defaultTodoUserId = defaultTodoUserId;
+    }
 
     @JsonProperty
     public String getTemplate() {
