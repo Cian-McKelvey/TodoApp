@@ -1,0 +1,11 @@
+---
+template: Hello, %s!
+defaultName: TodoApp
+
+# Default size for brands list repo thing
+defaultSize: 5
+
+logging:
+  level: INFO
+  loggers:
+    com.mckelvey: DEBUG
