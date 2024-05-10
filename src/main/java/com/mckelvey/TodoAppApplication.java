@@ -8,6 +8,7 @@ import com.mckelvey.resources.BrandResource;
 import com.mckelvey.resources.HelloWorldResource;
 import static com.mckelvey.Constants.*;
 
+import com.mckelvey.resources.TodoResource;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -93,6 +94,18 @@ public class TodoAppApplication extends Application<TodoAppConfiguration> {
         BrandRepository brandRepository = new BrandRepository(brands);
         BrandResource brandResource = new BrandResource(defaultSize, brandRepository);
         environment.jersey().register(brandResource);
+
+        // TODO REGISTERING
+        /*
+        HelloWorldResource resource = new HelloWorldResource(
+                configuration.getTemplate(),
+                configuration.getDefaultName()
+        );
+        environment.jersey().register(resource);
+        */
+
+        TodoResource todoResource = new TodoResource();
+        environment.jersey().register(todoResource);
     }
 
 }
