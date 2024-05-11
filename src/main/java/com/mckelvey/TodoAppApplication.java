@@ -5,7 +5,6 @@ import com.mckelvey.api.Brand;
 import com.mckelvey.db.MongoDBUtils;
 import com.mckelvey.health.ApplicationHealthCheck;
 import com.mckelvey.resources.BrandResource;
-import com.mckelvey.resources.HelloWorldResource;
 import static com.mckelvey.Constants.*;
 
 import com.mckelvey.resources.TodoResource;
@@ -67,13 +66,6 @@ public class TodoAppApplication extends Application<TodoAppConfiguration> {
         /*
             Resources
         */
-
-        // getting-started: HelloWorldApplication#run->HelloWorldResource
-        HelloWorldResource resource = new HelloWorldResource(
-                configuration.getTemplate(),
-                configuration.getDefaultName()
-        );
-        environment.jersey().register(resource);
 
         // The brands initialisation
         int defaultSize = configuration.getDefaultSize();  // Gets the default fetch size

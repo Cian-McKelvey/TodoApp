@@ -2,7 +2,6 @@ package com.mckelvey.resources;
 
 import com.mckelvey.api.Todo;
 import com.mckelvey.db.MongoDBUtils;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import jakarta.ws.rs.*;
