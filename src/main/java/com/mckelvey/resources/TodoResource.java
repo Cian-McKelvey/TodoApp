@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
+
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)  // Changes the return types of the methods to json in their http response
 public class TodoResource {
@@ -25,7 +28,9 @@ public class TodoResource {
         this.todoCollection = MongoDBUtils.getTodoCollection();
     }
 
+
     // Database operations methods
+
 
     @POST
     @Path("/new")
@@ -45,8 +50,50 @@ public class TodoResource {
     }
 
     // Update todo
+    @PUT
+    @Path("/{id}/update")
+    public Response updateTodo(@PathParam("id") String id, Map<String, Object> jsonData) {
+
+        String content = (String) jsonData.get("content");
+        if (content == null || content.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Content must not be empty").build();
+        }
+
+        // Update the content field of the todo item
+        Document updateResult = todoCollection.findOneAndUpdate(
+                eq("todoID", id),
+                set("content", content)
+        );
+
+        if (updateResult == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Todo not found").build();
+        }
+
+        // Return the updated document (re-fetch it from the database to ensure updated version is returned)
+        Document updatedTodo = todoCollection.find(eq("todoID", id)).first();
+        return Response.ok(updatedTodo).build();
+    }
 
     // Delete todo
+    @DELETE
+    @Path("/{id}/delete")
+    public Response deleteTodo(@PathParam("id") String id) {
+        try {
+            Document deletedTodo = todoCollection.findOneAndDelete(
+                    eq("todoID", id)
+            );
+
+            if (deletedTodo != null) {
+                return Response.ok().entity(id + " has been deleted").build();
+            } else {
+                System.out.println("THERE WASNT ANY ITEM FOUND TO BE DELETED");
+                return Response.status(Response.Status.BAD_REQUEST).entity("No todo with that id present in database").build();
+            }
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not perform delete action").build();
+        }
+    }
 
     // Fetch all todos
     @GET
