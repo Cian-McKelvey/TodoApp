@@ -3,7 +3,7 @@ package com.mckelvey.resources;
 import com.mckelvey.api.Todo;
 import com.mckelvey.db.MongoDBUtils;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Projections;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -70,7 +70,10 @@ public class TodoResource {
         }
 
         // Return the updated document (re-fetch it from the database to ensure updated version is returned)
-        Document updatedTodo = todoCollection.find(eq("todoID", id)).first();
+        Document updatedTodo = todoCollection.find(eq("todoID", id))
+                // Projections are used to hide, or include certain data from the response
+                // Here it is hiding the _id value, it serves no purpose.
+                .projection(Projections.fields(Projections.excludeId())).first();
         return Response.ok(updatedTodo).build();
     }
 
@@ -100,13 +103,9 @@ public class TodoResource {
     @Path("/get/all")
     public List<Document> getAllTodos() {
         // Fetch all documents from the collection
-        List<Document> documents = new ArrayList<>();
-        try (MongoCursor<Document> cursor = todoCollection.find().iterator()) {
-            while (cursor.hasNext()) {
-                documents.add(cursor.next());
-            }
-        }
-        return documents;
+        List<Document> resultList = new ArrayList<Document>();
+        todoCollection.find().projection(Projections.excludeId()).into(resultList);
+        return resultList;
     }
 
     // Fetch all todos by userID - not needed right now
