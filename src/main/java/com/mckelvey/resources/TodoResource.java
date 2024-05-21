@@ -35,7 +35,14 @@ public class TodoResource {
     @POST
     @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addTodo(Map<String, Object> jsonData) {
+    public Response addTodo(Map<String, Object> jsonData, @HeaderParam("x-access-token") String token) {
+
+        // Only checks for the presence of a token doesn't actually check it
+        if (token == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Missing required header 'x-access-token'")
+                    .build();
+        }
 
         String userId = (String) jsonData.get("userId");
         String content = (String) jsonData.get("content");
