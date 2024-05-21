@@ -1,28 +1,36 @@
 package com.mckelvey.auth;
 
-import static com.mckelvey.Constants.*;
-
-import com.mckelvey.Constants;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import javax.crypto.SecretKey;
+
+
+import static com.mckelvey.Constants.*;
 
 import java.util.Date;
 
 public class JWTHandler {
 
-    public String generateNewJwtToken(String userId, boolean adminStatus) {
+    private static final byte[] JWT_SIGNING_KEY_BYTES = JWT_SIGNING_KEY.getBytes();
+    private static final SecretKey GENERATED_ENCRYPTED_KEY = Keys.hmacShaKeyFor(JWT_SIGNING_KEY_BYTES);
+
+    public String generateNewJwtToken(String username, boolean adminStatus) {
         // Set the expiration time to 30 minutes from now
         Date expirationTime = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
 
+//                .setSubject(username)
+//                .claim("isAdmin", adminStatus)
+//                .setExpiration(expirationTime)
+//                .signWith(SignatureAlgorithm.HS256, JWT_SIGNING_KEY)
+//                .compact();
+
         // Create the JWT
-        String jwt = Jwts.builder()
-                .setSubject(userId)
-                .claim("isAdmin", adminStatus)
-                .setExpiration(expirationTime)
-                .signWith(SignatureAlgorithm.HS256, JWT_SIGNING_KEY)
+        String jwt = Jwts.builder().subject(username).claims()
+                .add("isAdmin", adminStatus).and()
+                .expiration(expirationTime)
+                .signWith(GENERATED_ENCRYPTED_KEY)
                 .compact();
 
-        //System.out.println("JWT: " + jwt);
         return jwt;
     }
 
@@ -37,5 +45,4 @@ public class JWTHandler {
     public boolean isUserAdmin() {
         return false;
     }
-
 }

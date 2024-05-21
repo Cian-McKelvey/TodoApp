@@ -1,6 +1,7 @@
 package com.mckelvey.resources;
 
 import com.mckelvey.api.Todo;
+import com.mckelvey.auth.JWTHandler;
 import com.mckelvey.db.MongoDBUtils;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Projections;
@@ -22,6 +23,8 @@ public class TodoResource {
 
     // Imports the MongoDB collection
     private MongoCollection<Document> todoCollection;
+
+    JWTHandler jwtHandler = new JWTHandler();
 
     // Fetches the collection so that it can be used
     public TodoResource() {
@@ -116,4 +119,11 @@ public class TodoResource {
     }
 
     // Fetch all todos by userID - not needed right now
+
+    @GET
+    @Path("/token")
+    public String getNewTokenTest() {
+        return jwtHandler.generateNewJwtToken("example", false);
+    }
+
 }
