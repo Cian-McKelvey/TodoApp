@@ -1,21 +1,25 @@
 package com.mckelvey.resources;
 
 import com.mckelvey.api.Todo;
-import com.mckelvey.auth.JWTHandler;
 import com.mckelvey.db.MongoDBUtils;
+import static com.mckelvey.auth.JWTHandler.generateNewJwtToken;
+import static com.mckelvey.auth.JWTHandler.isTokenValid;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Projections;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.set;
 
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)  // Changes the return types of the methods to json in their http response
@@ -23,8 +27,6 @@ public class TodoResource {
 
     // Imports the MongoDB collection
     private MongoCollection<Document> todoCollection;
-
-    JWTHandler jwtHandler = new JWTHandler();
 
     // Fetches the collection so that it can be used
     public TodoResource() {
@@ -47,16 +49,26 @@ public class TodoResource {
                     .build();
         }
 
-        String userId = (String) jsonData.get("userId");
-        String content = (String) jsonData.get("content");
+        boolean validTokenStatus = isTokenValid(token);
+        if (validTokenStatus) {
 
-        Todo newTodo = new Todo(userId, content);
-        String todoJson = newTodo.toJsonString();
-        Document todoDocument = Document.parse(todoJson);
-        todoCollection.insertOne(todoDocument);
+            String userId = (String) jsonData.get("userId");
+            String content = (String) jsonData.get("content");
 
-        // Return appropriate status code and message
-        return Response.ok().entity("Processed successfully").build();
+            Todo newTodo = new Todo(userId, content);
+            String todoJson = newTodo.toJsonString();
+            Document todoDocument = Document.parse(todoJson);
+            todoCollection.insertOne(todoDocument);
+
+            // Return appropriate status code and message
+            return Response.ok().entity("Processed successfully").build();
+
+        }
+        else {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("JWT is either not valid, or has expired")
+                    .build();
+        }
     }
 
     // Update todo
@@ -123,7 +135,7 @@ public class TodoResource {
     @GET
     @Path("/token")
     public String getNewTokenTest() {
-        return jwtHandler.generateNewJwtToken("example", false);
+        return generateNewJwtToken("example", false);
     }
 
 }
