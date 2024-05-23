@@ -3,19 +3,82 @@ package com.mckelvey.api;
 /*
 Profile Class
 Attributes:
-    account: Reference to the associated Account object.
+    account: Reference to the associated Account userId
     firstName: The user's first name.
     lastName: The user's last name.
-    dateOfBirth: The user's date of birth.
     profilePicture: URL or path to the user's profile picture - Store it in azure blob or something.
-    bio: Short biography or description of the user.
     location: The user's location (country).
-    joined_at: Timestamp of when the profile was created or updated.
 */
 
 public class UserProfile {
-    // Should have a link to a profile picture.
-    // In the event the application doesn't have a associated picture the default image should be used
 
+    private String accountID;  // Should contain the UUID of the assosiated user account
+    private String firstName, lastName;
+    private String profilePictureUrl;
+    private String location;
 
+    public UserProfile(String accountID) {
+        this.accountID = accountID;
+        this.firstName = null;
+        this.lastName = null;
+        this.profilePictureUrl = null;
+        this.location = null;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public static UserProfile generateAssociatedProfile(UserAccount userAccount) {
+        return new UserProfile(userAccount.getUserId());
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfile{" +
+                "accountID='" + accountID + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
+    public static void main(String[] args) {
+
+        UserAccount cian = new UserAccount("Cian", "Cian@gmail.com", "HelloPassword");
+        System.out.println(cian);
+
+        UserProfile generatedProfile = generateAssociatedProfile(cian);
+        System.out.println(generatedProfile);
+
+    }
 }
