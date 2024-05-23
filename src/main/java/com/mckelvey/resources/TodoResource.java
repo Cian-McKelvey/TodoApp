@@ -130,7 +130,17 @@ public class TodoResource {
         return resultList;
     }
 
-    // Fetch all todos by userID - not needed right now
+    // Fetch all todos by userID
+    @GET
+    @Path("/get/all/{id}")
+    public List<Document> getAllTodosByUserId(@PathParam("id") String id) {
+        List<Document> resultList = new ArrayList<>();
+        todoCollection.find(eq("userID", id))
+                .projection(Projections.excludeId())
+                .into(resultList);
+
+        return resultList;
+    }
 
     @GET
     @Path("/token")
