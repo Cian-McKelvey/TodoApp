@@ -11,6 +11,7 @@ public class MongoDBUtils {
     private static MongoClient mongoClient;
     private static MongoDatabase mongoDatabase;
     private static MongoCollection<Document> todoCollection;
+    // Add user and account collections
 
     public static void setMongoClient(MongoClient client) {
         mongoClient = client;
@@ -22,6 +23,7 @@ public class MongoDBUtils {
 
     public static void setTodoCollection(String collectionName) {
         todoCollection = mongoDatabase.getCollection(collectionName);
+        // Add user and account collection
     }
 
     public static MongoClient getMongoClient() {

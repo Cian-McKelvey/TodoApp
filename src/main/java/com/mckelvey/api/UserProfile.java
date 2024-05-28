@@ -72,13 +72,15 @@ public class UserProfile {
                 '}';
     }
 
-    public static void main(String[] args) {
-
-        UserAccount cian = new UserAccount("Cian", "Cian@gmail.com", "HelloPassword");
-        System.out.println(cian);
-
-        UserProfile generatedProfile = generateAssociatedProfile(cian);
-        System.out.println(generatedProfile);
-
+    // Probably isnt needed but ill leave it for now
+    public String toJsonString() {
+        return "UserProfile{" +
+                "accountID='" + accountID + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                ", location='" + location + '\'' +
+                '}';
     }
+
 }
