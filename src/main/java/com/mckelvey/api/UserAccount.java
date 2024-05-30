@@ -76,14 +76,14 @@ public class UserAccount {
 
     // Probably isn't needed but ill leave it for now
     public String toJsonString() {
-        return "UserAccount{" +
-                "userId='" + userId + '\'' +
-                ", createdAt=" + createdAt +
-                ", isAdmin=" + isAdmin +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                '}';
+        return "{" +
+                "\"userId\":\"" + userId + "\"," +
+                "\"createdAt\":\"" + createdAt + "\"," +
+                "\"isAdmin\":" + isAdmin + "," +
+                "\"username\":\"" + username + "\"," +
+                "\"email\":\"" + email + "\"," +
+                "\"passwordHash\":\"" + passwordHash + "\"" +
+                "}";
     }
 
 }

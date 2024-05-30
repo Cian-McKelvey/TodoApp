@@ -74,13 +74,13 @@ public class UserProfile {
 
     // Probably isnt needed but ill leave it for now
     public String toJsonString() {
-        return "UserProfile{" +
-                "accountID='" + accountID + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                ", location='" + location + '\'' +
-                '}';
+        return "{" +
+                "\"accountID\":\"" + accountID + "\"," +
+                "\"firstName\":\"" + firstName + "\"," +
+                "\"lastName\":\"" + lastName + "\"," +
+                "\"profilePictureUrl\":\"" + profilePictureUrl + "\"," +
+                "\"location\":\"" + location + "\"" +
+                "}";
     }
 
 }

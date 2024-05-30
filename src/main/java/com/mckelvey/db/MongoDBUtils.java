@@ -5,14 +5,16 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-// Class is used to hold the mongodb client, database, and collections
+// Class to hold the MongoDB client, database, and collections
 public class MongoDBUtils {
 
     private static MongoClient mongoClient;
     private static MongoDatabase mongoDatabase;
     private static MongoCollection<Document> todoCollection;
-    // Add user and account collections
+    private static MongoCollection<Document> accountCollection;
+    private static MongoCollection<Document> profileCollection;
 
+    // Setters
     public static void setMongoClient(MongoClient client) {
         mongoClient = client;
     }
@@ -23,9 +25,17 @@ public class MongoDBUtils {
 
     public static void setTodoCollection(String collectionName) {
         todoCollection = mongoDatabase.getCollection(collectionName);
-        // Add user and account collection
     }
 
+    public static void setAccountCollection(String collectionName) {
+        accountCollection = mongoDatabase.getCollection(collectionName);
+    }
+
+    public static void setProfileCollection(String collectionName) {
+        profileCollection = mongoDatabase.getCollection(collectionName);
+    }
+
+    // Getters
     public static MongoClient getMongoClient() {
         return mongoClient;
     }
@@ -36,5 +46,13 @@ public class MongoDBUtils {
 
     public static MongoCollection<Document> getTodoCollection() {
         return todoCollection;
+    }
+
+    public static MongoCollection<Document> getAccountCollection() {
+        return accountCollection;
+    }
+
+    public static MongoCollection<Document> getProfileCollection() {
+        return profileCollection;
     }
 }

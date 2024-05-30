@@ -4,6 +4,7 @@ import com.mckelvey.Repository.BrandRepository;
 import com.mckelvey.api.Brand;
 import com.mckelvey.db.MongoDBUtils;
 import com.mckelvey.health.ApplicationHealthCheck;
+import com.mckelvey.resources.AccountResource;
 import com.mckelvey.resources.BrandResource;
 import static com.mckelvey.Constants.*;
 
@@ -56,7 +57,11 @@ public class TodoAppApplication extends Application<TodoAppConfiguration> {
             // Set MongoDB instances in the utility class - Only pass the string collection name
             MongoDBUtils.setMongoClient(mongoClient);
             MongoDBUtils.setMongoDatabase(database);
+
             MongoDBUtils.setTodoCollection(MONGODB_TODO_COLLECTION);
+            MongoDBUtils.setAccountCollection(MONGODB_ACCOUNT_COLLECTION);
+            MongoDBUtils.setProfileCollection(MONGODB_PROFILE_COLLECTION);
+
         } catch (Exception e) {
 
             e.printStackTrace(); // Example: printing the stack trace
@@ -98,6 +103,9 @@ public class TodoAppApplication extends Application<TodoAppConfiguration> {
 
         TodoResource todoResource = new TodoResource();
         environment.jersey().register(todoResource);
+
+        AccountResource accountResource = new AccountResource();
+        environment.jersey().register(accountResource);
     }
 
 }
