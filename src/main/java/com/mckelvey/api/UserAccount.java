@@ -9,7 +9,7 @@ import com.mckelvey.auth.DataHashing;
 public class UserAccount {
     // Decide on what user accounts should contain, use what is available from PC part project and add more.
 
-    private String userId;
+    private String accountId;
     private String username;
     private String passwordHash;
     private String email;
@@ -18,7 +18,7 @@ public class UserAccount {
 
     public UserAccount(String username, String email, String password) {
         // Default values
-        this.userId = UUID.randomUUID().toString();
+        this.accountId = UUID.randomUUID().toString();
         this.createdAt = LocalDateTime.now();
         this.isAdmin = false;
 
@@ -29,8 +29,8 @@ public class UserAccount {
     }
 
 
-    public String getUserId() {
-        return userId;
+    public String getAccountId() {
+        return accountId;
     }
 
     public String getUsername() {
@@ -65,7 +65,7 @@ public class UserAccount {
     @Override
     public String toString() {
         return "UserAccount{" +
-                "userId='" + userId + '\'' +
+                "accountId='" + accountId + '\'' +
                 ", createdAt=" + createdAt +
                 ", isAdmin=" + isAdmin +
                 ", username='" + username + '\'' +
@@ -77,7 +77,7 @@ public class UserAccount {
     // Probably isn't needed but ill leave it for now
     public String toJsonString() {
         return "{" +
-                "\"userId\":\"" + userId + "\"," +
+                "\"accountId\":\"" + accountId + "\"," +
                 "\"createdAt\":\"" + createdAt + "\"," +
                 "\"isAdmin\":" + isAdmin + "," +
                 "\"username\":\"" + username + "\"," +

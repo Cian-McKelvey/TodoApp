@@ -12,13 +12,13 @@ Attributes:
 
 public class UserProfile {
 
-    private String accountID;  // Should contain the UUID of the assosiated user account
+    private String profileId;  // Should contain the UUID of the assosiated user account
     private String firstName, lastName;
     private String profilePictureUrl;
     private String location;
 
-    public UserProfile(String accountID) {
-        this.accountID = accountID;
+    public UserProfile(String profileId) {
+        this.profileId = profileId;
         this.firstName = null;
         this.lastName = null;
         this.profilePictureUrl = null;
@@ -58,13 +58,13 @@ public class UserProfile {
     }
 
     public static UserProfile generateAssociatedProfile(UserAccount userAccount) {
-        return new UserProfile(userAccount.getUserId());
+        return new UserProfile(userAccount.getAccountId());
     }
 
     @Override
     public String toString() {
         return "UserProfile{" +
-                "accountID='" + accountID + '\'' +
+                "profileId='" + profileId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
@@ -75,7 +75,7 @@ public class UserProfile {
     // Probably isnt needed but ill leave it for now
     public String toJsonString() {
         return "{" +
-                "\"accountID\":\"" + accountID + "\"," +
+                "\"profileId\":\"" + profileId + "\"," +
                 "\"firstName\":\"" + firstName + "\"," +
                 "\"lastName\":\"" + lastName + "\"," +
                 "\"profilePictureUrl\":\"" + profilePictureUrl + "\"," +

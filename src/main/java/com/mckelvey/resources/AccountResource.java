@@ -12,6 +12,8 @@ import org.bson.Document;
 
 import java.util.Map;
 
+import static com.mongodb.client.model.Filters.eq;
+
 
 @Path("/users/account")
 @Produces(MediaType.APPLICATION_JSON)  // Changes the return types of the methods to json in their http response
@@ -80,6 +82,38 @@ public class AccountResource {
                     .build();
         }
 
+    }
+
+    @DELETE
+    @Path("/{id}/delete")
+    public Response deleteExistingUser(@PathParam("id") String id) {
+
+        System.out.println("\n\n\n\n\n ENDPOINT CALLED \n\n\n\n\n");
+
+        try {
+            Document deletedAccountDoc = accountCollection.findOneAndDelete(
+                    eq("accountId", id)
+            );
+
+            Document deleteProfileDoc = profileCollection.findOneAndDelete(
+                    eq("profileId", id)
+            );
+
+            if (deletedAccountDoc != null && deleteProfileDoc != null)
+                return Response.status(Response.Status.OK)
+                        .entity("Account has been deleted")
+                        .build();
+
+            else
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Could not find account")
+                        .build();
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Internal Error, " + e)
+                    .build();
+        }
     }
 
 }
